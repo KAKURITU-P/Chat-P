@@ -1,6 +1,6 @@
  ## 最新バージョン：v 1.0.0
 
- ## FAB提出用
-## ベースのプログラムのGithubのページ
-* [Lite版（ベースとして使用）](https://github.com/KAKURITU-P/microbit-chat-ja-lite)
-* [Lite版（ベースとして使用）](https://github.com/KAKURITU-P/microbit-chat-ja-latee)
+ ## このプログラムはFAB提出用です（使用は非推奨！！！）
+## ベースとなったプログラムのGithubのページ
+* [Lite版 （基礎的なプログラムを引用）](https://github.com/KAKURITU-P/microbit-chat-ja-lite)
+* [Latee版（入力インターフェイスなどを引用）](https://github.com/KAKURITU-P/microbit-chat-ja-latee)
