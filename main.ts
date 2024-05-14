@@ -17,7 +17,6 @@ input.onPinPressed(TouchPin.P0, function () {
     カナ文字 = ""
     カナ文字_メモリ = ""
     送信用文字 = ""
-    katakana.showString("ｱｶｻﾀﾅﾊﾏﾔﾗﾜｬｧ".substr(文字セレクター, 1))
     basic.showLeds(`
         # . # . .
         # . # # #
@@ -26,6 +25,7 @@ input.onPinPressed(TouchPin.P0, function () {
         . . # . .
         `)
     basic.clearScreen()
+    katakana.showString("ｱｶｻﾀﾅﾊﾏﾔﾗﾜｬｧ".substr(文字セレクター, 1))
 })
 datalogger.onLogFull(function () {
     datalogger.deleteLog(datalogger.DeleteType.Fast)
@@ -216,5 +216,43 @@ let 入力カウンター3 = 0
 katakana.setScrollTime(100)
 radio.setGroup(1001)
 文字セレクター = 0
-katakana.showString("ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜｦﾝｯｬｭｮｧｨｩｪｫ!?_-｡､ﾞﾟ".substr(文字セレクター, 1))
 pins.touchSetMode(TouchTarget.LOGO, TouchTargetMode.Capacitive)
+for (let index = 0; index < randint(1, 3); index++) {
+    basic.showLeds(`
+        . . . . .
+        . . . . .
+        . . . . .
+        . . . . .
+        # . . . .
+        `)
+    basic.showLeds(`
+        . . . . .
+        . . . . .
+        . . . . .
+        . . . . .
+        # # . . .
+        `)
+    basic.showLeds(`
+        . . . . .
+        . . . . .
+        . . . . .
+        . . . . .
+        # # # . .
+        `)
+    basic.showLeds(`
+        . . . . .
+        . . . . .
+        . . . . .
+        . . . . .
+        # # # # .
+        `)
+}
+basic.showLeds(`
+    . . . # .
+    # . # . .
+    . # . . .
+    . . . . .
+    # # # # #
+    `)
+basic.clearScreen()
+katakana.showString("ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜｦﾝｯｬｭｮｧｨｩｪｫ!?_-｡､ﾞﾟ".substr(文字セレクター, 1))
