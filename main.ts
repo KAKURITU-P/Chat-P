@@ -26,6 +26,7 @@ input.onPinPressed(TouchPin.P0, function () {
         `)
     basic.clearScreen()
     katakana.showString("ｱｶｻﾀﾅﾊﾏﾔﾗﾜｬｧ".substr(文字セレクター, 1))
+    music.play(music.stringPlayable("F C5 F D C5 F C5 F ", 500), music.PlaybackMode.LoopingInBackground)
 })
 datalogger.onLogFull(function () {
     datalogger.deleteLog(datalogger.DeleteType.Fast)
@@ -58,7 +59,7 @@ input.onButtonPressed(Button.A, function () {
 })
 input.onPinPressed(TouchPin.P2, function () {
     if (入力カウンター2 == 0) {
-        送信用文字_メモリ = "" + 送信用文字 + "AKSTNHMYRWLX".substr(文字セレクター, 1)
+        送信用文字_メモリ = "" + 送信用文字 + "AKSTNHMYRWLX0".substr(文字セレクター, 1)
         送信用文字 = 送信用文字_メモリ
         入力カウンター2 = 1
     } else {
@@ -67,6 +68,9 @@ input.onPinPressed(TouchPin.P2, function () {
         if (文字セレクター == 11) {
             送信用文字_メモリ = "" + 送信用文字 + "bcdfghjlpqrst".substr(子音セレクター, 1)
             送信用文字 = 送信用文字_メモリ
+        } else if (文字セレクター == 12) {
+            送信用文字_メモリ = "" + 送信用文字 + "1234567890".substr(子音セレクター, 1)
+            送信用文字 = 送信用文字_メモリ
         } else {
             送信用文字_メモリ = "" + 送信用文字 + "aiueo".substr(子音セレクター, 1)
             送信用文字 = 送信用文字_メモリ
@@ -74,7 +78,25 @@ input.onPinPressed(TouchPin.P2, function () {
         入力カウンター2 = 0
         子音セレクター = 0
     }
-    katakana.showString("ｱｶｻﾀﾅﾊﾏﾔﾗﾜｬｧ".substr(文字セレクター, 1))
+    katakana.showString("ｱｶｻﾀﾅﾊﾏﾔﾗﾜｬｧ1".substr(文字セレクター, 1))
+})
+input.onButtonPressed(Button.AB, function () {
+    復号化用カウンター = 0
+    カナ文字_受信時 = ""
+    カナ文字_受信時メモリ = ""
+    while (送信用文字.length / 2 > 受信文字数カウンター) {
+        復号化用カウンター = "AaAiAuAeAoKaKiKuKeKoSaSiSuSeSoTaTiTuTeToNaNiNuNeNoHaHiHuHeHoMaMiMuMeMoYaYuYoRaRiRuReROWaWiWuLaLiLuLeXbXcXdXfXgXhXjXlXpXqXrXsXt01020304050607080900".indexOf(送信用文字.substr(受信文字数カウンター * 2, 2))
+        カナ文字_受信時 = "" + カナ文字_受信時メモリ + "ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜｦﾝｬｭｮｯｧｨｩｪｫ!?_-｡､ﾞﾟ1234567890".charAt(復号化用カウンター / 2)
+        カナ文字_受信時メモリ = カナ文字_受信時
+        受信文字数カウンター += 1
+    }
+    hyo2 = hyoujiyou
+    hyoujiyou = "" + hyo2 + カナ文字_受信時
+    katakana.showString(hyoujiyou)
+    hyoujiyou = ""
+    hyo2 = ""
+    受信文字数カウンター = 0
+    katakana.showString("ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜｦﾝｯｬｭｮｧｨｩｪｫ!?_-｡､ﾞﾟ".substr(文字セレクター, 1))
 })
 // メッセージ受信
 // メッセージ複号化
@@ -86,75 +108,85 @@ radio.onReceivedString(function (receivedString) {
     復号化用カウンター = 0
     カナ文字_受信時 = ""
     カナ文字_受信時メモリ = ""
-    受信文字数カウンター = 0
-    if (receivedString.includes("//")) {
-        受信文字数カウンター = 1
-        while (receivedString.length / 2 > 受信文字数カウンター) {
-            復号化用カウンター = "AaAiAuAeAoKaKiKuKeKoSaSiSuSeSoTaTiTuTeToNaNiNuNeNoHaHiHuHeHoMaMiMuMeMoYaYuYoRaRiRuReROWaWiWuLaLiLuLeXbXcXdXfXgXhXjXlXpXqXrXsXt".indexOf(receivedString.substr(受信文字数カウンター * 2, 2))
-            カナ文字_受信時 = "" + カナ文字_受信時メモリ + "ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜｦﾝｬｭｮｯｧｨｩｪｫ!?_-｡､ﾞﾟ".charAt(復号化用カウンター / 2)
-            カナ文字_受信時メモリ = カナ文字_受信時
-            受信文字数カウンター += 1
-        }
-        hyo2 = hyoujiyou
-        hyoujiyou = "" + hyo2 + カナ文字_受信時
-        basic.pause(200)
-        basic.showLeds(`
-            # # . . .
-            # . # . .
-            # # . # .
-            . . . # .
-            . . . # #
-            `)
-        basic.clearScreen()
-        music.play(music.createSoundExpression(
-        WaveShape.Sine,
-        2500,
-        2500,
-        255,
-        255,
-        100,
-        SoundExpressionEffect.None,
-        InterpolationCurve.Linear
-        ), music.PlaybackMode.UntilDone)
-        basic.pause(100)
-        music.play(music.createSoundExpression(
-        WaveShape.Sine,
-        2500,
-        2500,
-        255,
-        255,
-        500,
-        SoundExpressionEffect.None,
-        InterpolationCurve.Linear
-        ), music.PlaybackMode.UntilDone)
-        katakana.showString(hyoujiyou)
-        basic.pause(1000)
-        basic.clearScreen()
-        katakana.showString("ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜｦﾝｯｬｭｮｧｨｩｪｫ!?_-｡､ﾞﾟ".substr(文字セレクター, 1))
-        hyoujiyou = ""
-        hyo2 = ""
+    if (receivedString.includes("@@")) {
+        music.stopAllSounds()
     } else {
-        while (receivedString.length / 2 > 受信文字数カウンター) {
-            復号化用カウンター = "AaAiAuAeAoKaKiKuKeKoSaSiSuSeSoTaTiTuTeToNaNiNuNeNoHaHiHuHeHoMaMiMuMeMoYaYuYoRaRiRuReROWaWiWuLaLiLuLeXbXcXdXfXgXhXjXlXpXqXrXsXt".indexOf(receivedString.substr(受信文字数カウンター * 2, 2))
-            カナ文字_受信時 = "" + カナ文字_受信時メモリ + "ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜｦﾝｬｭｮｯｧｨｩｪｫ!?_-｡､ﾞﾟ".charAt(復号化用カウンター / 2)
-            カナ文字_受信時メモリ = カナ文字_受信時
-            受信文字数カウンター += 1
+        if (receivedString.includes("//")) {
+            受信文字数カウンター = 1
+            while (receivedString.length / 2 > 受信文字数カウンター) {
+                復号化用カウンター = "AaAiAuAeAoKaKiKuKeKoSaSiSuSeSoTaTiTuTeToNaNiNuNeNoHaHiHuHeHoMaMiMuMeMoYaYuYoRaRiRuReROWaWiWuLaLiLuLeXbXcXdXfXgXhXjXlXpXqXrXsXt01020304050607080900".indexOf(receivedString.substr(受信文字数カウンター * 2, 2))
+                カナ文字_受信時 = "" + カナ文字_受信時メモリ + "ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜｦﾝｬｭｮｯｧｨｩｪｫ!?_-｡､ﾞﾟ1234567890".charAt(復号化用カウンター / 2)
+                カナ文字_受信時メモリ = カナ文字_受信時
+                受信文字数カウンター += 1
+            }
+            hyo2 = hyoujiyou
+            hyoujiyou = "" + hyo2 + カナ文字_受信時
+            basic.pause(200)
+            basic.showLeds(`
+                # # . . .
+                # . # . .
+                # # . # .
+                . . . # .
+                . . . # #
+                `)
+            radio.sendString("@@")
+            basic.clearScreen()
+            music.play(music.createSoundExpression(
+            WaveShape.Sine,
+            2500,
+            2500,
+            255,
+            255,
+            100,
+            SoundExpressionEffect.None,
+            InterpolationCurve.Linear
+            ), music.PlaybackMode.UntilDone)
+            basic.pause(100)
+            music.play(music.createSoundExpression(
+            WaveShape.Sine,
+            2500,
+            2500,
+            255,
+            255,
+            500,
+            SoundExpressionEffect.None,
+            InterpolationCurve.Linear
+            ), music.PlaybackMode.UntilDone)
+            basic.pause(2000)
+            katakana.showString(hyoujiyou)
+            basic.pause(1000)
+            basic.clearScreen()
+            katakana.showString("ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜｦﾝｯｬｭｮｧｨｩｪｫ!?_-｡､ﾞﾟ".substr(文字セレクター, 1))
+            hyoujiyou = ""
+            hyo2 = ""
+        } else {
+            while (receivedString.length / 2 > 受信文字数カウンター) {
+                復号化用カウンター = "AaAiAuAeAoKaKiKuKeKoSaSiSuSeSoTaTiTuTeToNaNiNuNeNoHaHiHuHeHoMaMiMuMeMoYaYuYoRaRiRuReROWaWiWuLaLiLuLeXbXcXdXfXgXhXjXlXpXqXrXsXt".indexOf(receivedString.substr(受信文字数カウンター * 2, 2))
+                カナ文字_受信時 = "" + カナ文字_受信時メモリ + "ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜｦﾝｬｭｮｯｧｨｩｪｫ!?_-｡､ﾞﾟ".charAt(復号化用カウンター / 2)
+                カナ文字_受信時メモリ = カナ文字_受信時
+                受信文字数カウンター += 1
+            }
+            hyo2 = hyoujiyou
+            hyoujiyou = "" + hyo2 + カナ文字_受信時
         }
-        hyo2 = hyoujiyou
-        hyoujiyou = "" + hyo2 + カナ文字_受信時
     }
 })
 input.onButtonPressed(Button.B, function () {
-	
+    if (入力カウンター2 == 0) {
+        送信用文字 = 送信用文字.substr(0, 送信用文字.length - 2)
+    } else {
+        送信用文字 = "" + 送信用文字 + "D"
+        送信用文字 = 送信用文字.substr(0, 送信用文字.length - 2)
+    }
 })
 input.onPinPressed(TouchPin.P1, function () {
     basic.clearScreen()
     if (入力カウンター2 == 0) {
         文字セレクター += 1
-        if (文字セレクター >= 12) {
+        if (文字セレクター >= 13) {
             文字セレクター = 0
         }
-        katakana.showString("ｱｶｻﾀﾅﾊﾏﾔﾗﾜｬｧ".substr(文字セレクター, 1))
+        katakana.showString("ｱｶｻﾀﾅﾊﾏﾔﾗﾜｬｧ1".substr(文字セレクター, 1))
     } else {
         basic.clearScreen()
         basic.pause(200)
@@ -186,6 +218,13 @@ input.onPinPressed(TouchPin.P1, function () {
                 子音セレクター += 1
             }
             katakana.showString("ｧｨｩｪｫ!?_-｡､ﾞﾟ".substr(子音セレクター, 1))
+        } else if (文字セレクター == 12) {
+            if (子音セレクター >= 9) {
+                子音セレクター = 0
+            } else {
+                子音セレクター += 1
+            }
+            katakana.showString("1234567890".substr(子音セレクター, 1))
         } else {
             if (子音セレクター >= 4) {
                 子音セレクター = 0
@@ -213,7 +252,7 @@ let ぱけかうんた = 0
 let o = 0
 let 文字セレクター = 0
 let 入力カウンター3 = 0
-katakana.setScrollTime(100)
+katakana.setScrollTime(150)
 radio.setGroup(1001)
 文字セレクター = 0
 pins.touchSetMode(TouchTarget.LOGO, TouchTargetMode.Capacitive)

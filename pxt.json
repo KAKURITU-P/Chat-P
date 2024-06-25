@@ -27,7 +27,7 @@
         "branch": "v6.0.25",
         "tag": "v6.0.25",
         "commits": "https://github.com/microsoft/pxt-microbit/commits/f72136f1d01face3fc76caffa5343af1db369a37",
-        "target": "6.0.27",
+        "target": "6.0.28",
         "pxt": "9.0.15",
         "targetId": "microbit"
     },
