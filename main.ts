@@ -26,7 +26,6 @@ input.onPinPressed(TouchPin.P0, function () {
         `)
     basic.clearScreen()
     katakana.showString("ｱｶｻﾀﾅﾊﾏﾔﾗﾜｬｧ".substr(文字セレクター, 1))
-    music.play(music.stringPlayable("F C5 F D C5 F C5 F ", 500), music.PlaybackMode.LoopingInBackground)
 })
 datalogger.onLogFull(function () {
     datalogger.deleteLog(datalogger.DeleteType.Fast)
@@ -114,7 +113,7 @@ radio.onReceivedString(function (receivedString) {
         if (receivedString.includes("//")) {
             受信文字数カウンター = 1
             while (receivedString.length / 2 > 受信文字数カウンター) {
-                復号化用カウンター = "AaAiAuAeAoKaKiKuKeKoSaSiSuSeSoTaTiTuTeToNaNiNuNeNoHaHiHuHeHoMaMiMuMeMoYaYuYoRaRiRuReROWaWiWuLaLiLuLeXbXcXdXfXgXhXjXlXpXqXrXsXt01020304050607080900".indexOf(receivedString.substr(受信文字数カウンター * 2, 2))
+                復号化用カウンター = "AaAiAuAeAoKaKiKuKeKoSaSiSuSeSoTaTiTuTeToNaNiNuNeNoHaHiHuHeHoMaMiMuMeMoYaYuYoRaRiRuReRoWaWiWuLaLiLuLeXbXcXdXfXgXhXjXlXpXqXrXsXt01020304050607080900".indexOf(receivedString.substr(受信文字数カウンター * 2, 2))
                 カナ文字_受信時 = "" + カナ文字_受信時メモリ + "ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜｦﾝｬｭｮｯｧｨｩｪｫ!?_-｡､ﾞﾟ1234567890".charAt(復号化用カウンター / 2)
                 カナ文字_受信時メモリ = カナ文字_受信時
                 受信文字数カウンター += 1
